@@ -28,13 +28,20 @@
 	  created() 
 	  {
 	  	// Prevent Closing when work is running
-		window.onbeforeunload = (e) => {
+		window.onbeforeunload = (e) => 
+		{
 		  e.returnValue = false;  // this will *prevent* the closing no matter what value is passed
-
-		  if(confirm('Do you really want to close the application?')) { 
-		    win.destroy();  // this will bypass onbeforeunload and close the app
-		  }  
+		  // win.destroy()
 		};
+	  },
+	  methods:
+	  {
+	  	fullscreen()
+	  	{
+	  		var electron = require('electron');
+			var window = electron.remote.getCurrentWindow();
+			window.setFullScreen(true);
+	  	}
 	  }
 	}
 </script>
