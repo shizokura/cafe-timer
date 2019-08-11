@@ -1,7 +1,29 @@
 
+// const routes = [
+//   {
+//     path: '/',
+//     component: () => import('layouts/MyLayout.vue'),
+//     children: [
+//       { path: '', component: () => import('pages/Login.vue') }
+//     ]
+//   }
+// ]
+
 const routes = [
   {
     path: '/',
+    component: () => import('pages/Login.vue')
+  },
+  {
+    path: '/topup',
+    component: () => import('pages/Topup.vue')
+  },
+  {
+    path: '/register',
+    component: () => import('pages/Register.vue')
+  },
+  {
+    path: '/timer',
     component: () => import('layouts/MyLayout.vue'),
     children: [
       { path: '', component: () => import('pages/Index.vue') }
