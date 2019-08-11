@@ -25,22 +25,17 @@
 	export default 
 	{
 	  name: 'PageIndex',
-	  created() 
-	  {
-	  	// Prevent Closing when work is running
-		window.onbeforeunload = (e) => 
-		{
-		  e.returnValue = false;  // this will *prevent* the closing no matter what value is passed
-		  // win.destroy()
-		};
-	  },
 	  methods:
 	  {
 	  	fullscreen()
 	  	{
+	  		// app.dock.hide();
+
 	  		var electron = require('electron');
 			var window = electron.remote.getCurrentWindow();
 			window.setFullScreen(true);
+			window.setAlwaysOnTop(true, "floating", 1);
+			window.setVisibleOnAllWorkspaces(true);
 	  	}
 	  }
 	}
