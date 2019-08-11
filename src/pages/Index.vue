@@ -6,11 +6,11 @@
   	</div>
   	<div class="redeem">
   		<h4 style="margin-bottom: 0;">Redeem Points</h4>
-  		<h5 style="margin-top: 1rem;">You have currently {{ $route.query.points }} points.</h5>
-  		<q-btn style="width: 100%; margin-top: 10px;" unelevated color="primary" label="50 Points (30 Minutes)" />
-  		<q-btn style="width: 100%; margin-top: 10px;" unelevated color="primary" label="100 Points (1 Hour)" />
-  		<q-btn style="width: 100%; margin-top: 10px;" unelevated color="primary" label="200 Points (3 Hours)" />
-  		<q-btn style="width: 100%; margin-top: 10px;" unelevated color="primary" label="300 Points (5 Hours)" />
+  		<h5 style="margin-top: 1rem;">You have currently {{ points }} points.</h5>
+  		<q-btn @click="claim_points(50)" style="width: 100%; margin-top: 10px;" unelevated color="primary" label="50 Points (30 Minutes)" />
+  		<q-btn @click="claim_points(100)" style="width: 100%; margin-top: 10px;" unelevated color="primary" label="100 Points (1 Hour)" />
+  		<q-btn @click="claim_points(200)" style="width: 100%; margin-top: 10px;" unelevated color="primary" label="200 Points (3 Hours)" />
+  		<q-btn @click="claim_points(300)" style="width: 100%; margin-top: 10px;" unelevated color="primary" label="300 Points (5 Hours)" />
   	</div>
   </q-page>
 </template>
@@ -34,7 +34,8 @@
 	  {
 	  	return {
 	  		current_time: (this.$route.query.remaining_minutes * 60) - 1,
-	  		timer: null
+	  		timer: null,
+	  		points: this.$route.query.points
 	  	}
 	  },
 	  methods:
@@ -56,6 +57,35 @@
 		    ret += "" + mins + ":" + (secs < 10 ? "0" : "");
 		    ret += "" + secs;
 		    return ret;
+		},
+		async claim_points(points)
+		{
+			this.$q.loading.show();
+
+			const response = await this.$axios.post('/api/claim_points',
+			{
+				username: this.$route.query.member_un,
+				points: points
+			});
+
+			if (response.data == 'success')
+			{
+				this.$q.notify({
+					message: "Successfully claimed points.",
+					color: 'green'
+				});
+
+				this.points -= points;
+			}
+			else
+			{
+				this.$q.notify({
+					message: "You don't have enough points.",
+					color: 'red'
+				});
+			}
+
+			this.$q.loading.hide();
 		}
 	  },
 	  created()
