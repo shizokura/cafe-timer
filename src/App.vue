@@ -19,10 +19,11 @@ export default
   created()
   {
   	// Prevent Closing when work is running
-  	// window.onbeforeunload = (e) => 
-  	// {
-  	//   e.returnValue = false;  // this will *prevent* the closing no matter what value is passed
-  	// };
+  	window.onbeforeunload = (e) => 
+  	{
+  	  e.returnValue = false;  // this will *prevent* the closing no matter what value is passed
+      this.$router.push('/');
+  	};
 
     // set global base url
     this.$axios.defaults.baseURL = 'http://cafe-timer-api.test';
@@ -55,11 +56,13 @@ export default
     },
     show_fullscreen(window)
     {
+      console.log("fullscreen");
       window.setFullScreen(true);
       window.setAlwaysOnTop(true, "floating", 1);
       window.setVisibleOnAllWorkspaces(true);
       this.timer = setInterval(() =>
       {
+        console.log("show");
         window.show();
       }, 1000);
     },
@@ -69,6 +72,8 @@ export default
       window.setAlwaysOnTop(false);
       window.setVisibleOnAllWorkspaces(false);
       clearInterval(this.timer);
+      this.timer = null;
+      console.log("remove");
     }
   }
 }

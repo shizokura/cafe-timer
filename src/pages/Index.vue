@@ -33,7 +33,8 @@
 	  data()
 	  {
 	  	return {
-	  		current_time: (this.$route.query.remaining_minutes * 60) - 1
+	  		current_time: (this.$route.query.remaining_minutes * 60) - 1,
+	  		timer: null
 	  	}
 	  },
 	  methods:
@@ -61,7 +62,7 @@
 	  {
 	  	EventBus.$emit('toggleFullscreen', false);
 
-	  	const timer = setInterval(async () => 
+	  	this.timer = setInterval(async () => 
   		{
   			if (this.current_time > 0)
   			{
@@ -75,11 +76,15 @@
   			}
   			else
   			{
-  				clearInterval(timer);
-  				EventBus.$emit('toggleFullscreen', true);
   				this.$router.push('/');
   			}
   		}, 1000);
+	  },
+	  beforeDestroy()
+	  {
+	  	clearInterval(this.timer);
+	  	this.timer = null;
+  		EventBus.$emit('toggleFullscreen', true);
 	  }
 	}
 </script>
