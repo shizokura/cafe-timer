@@ -16,7 +16,7 @@ export default
     return {
       timer: null,
       shutdown_timer: null,
-      shutdown_seconds: 10
+      shutdown_seconds: 300
     }
   },
   created()
@@ -71,7 +71,7 @@ export default
       }, 1000);
 
       // shut down timer
-      this.shutdown_seconds = 10;
+      this.shutdown_seconds = 300;
       this.shutdown_timer = setInterval(() =>
       {
         if (this.shutdown_seconds > 0)
