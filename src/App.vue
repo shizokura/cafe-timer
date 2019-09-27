@@ -29,7 +29,11 @@ export default
   	};
 
     // set global base url
-    this.$axios.defaults.baseURL = 'http://cafe-timer-api.test:81';
+    if (process.env.PROD) {
+      this.$axios.defaults.baseURL = 'http://cafe-timer-api.test:81';
+    } else {
+      this.$axios.defaults.baseURL = 'http://cafe-timer-api.test';
+    }
 
     this.fullscreen();
   },

@@ -26,6 +26,7 @@
 
 <script>
 	import EventBus from '../event-bus';
+	require('howler');
 
 	export default 
 	{
@@ -35,7 +36,8 @@
 	  	return {
 	  		current_time: (this.$route.query.remaining_minutes * 60) - 1,
 	  		timer: null,
-	  		points: this.$route.query.points
+	  		points: this.$route.query.points,
+	  		playing: false
 	  	}
 	  },
 	  methods:
@@ -94,6 +96,42 @@
 
 	  	this.timer = setInterval(async () => 
   		{
+  			if (this.current_time <= 601 && this.current_time >= 599)
+  			{
+  				if (!this.playing)
+  				{
+  					this.playing = true;
+	  				
+	  				const sound = new Howl({
+		                src: 'statics/10-minutes.mp3',
+		                volume: 1,
+		            });
+		            sound.play();
+
+		            setTimeout(() => {
+		            	this.playing = false;
+		            }, 2000)
+  				}
+  			}
+
+  			if (this.current_time <= 61 && this.current_time >= 59)
+  			{
+  				if (!this.playing)
+  				{
+  					this.playing = true;
+	  				
+	  				const sound = new Howl({
+		                src: 'statics/1-minute.mp3',
+		                volume: 1,
+		            });
+		            sound.play();
+
+		            setTimeout(() => {
+		            	this.playing = false;
+		            }, 2000)
+  				}
+  			}
+
   			if (this.current_time > 0)
   			{
   				const response = await this.$axios.post('/api/update_time', 

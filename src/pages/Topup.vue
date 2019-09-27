@@ -11,6 +11,9 @@
 				<q-input filled label="Username" v-model="username"></q-input>
 			</div>
 			<div class="form-group">
+				<q-input filled label="Password" v-model="password"></q-input>
+			</div>
+			<div class="form-group">
 				<div style="display: grid; grid-template-columns: auto auto; grid-column-gap: 5px">
 					<q-btn type="button" @click="$router.push('/')" unelevated color="primary" label="BACK" />
 					<q-btn type="submit" unelevated color="primary" label="TOPUP" />
@@ -30,8 +33,8 @@
 			background-color: #fff;
 			width: 400px;
 			margin: auto;
-			margin-top: calc(50vh - 150px);
-			height: 300px;
+			margin-top: calc(50vh - 185px);
+			height: 370px;
 			.form-group {
 				margin-bottom: 15px;
 				text-align: center;
@@ -52,7 +55,8 @@
 			return {
 				activation_code: null,
 				pin: null,
-				username: null
+				username: null,
+				password: null
 			}
 		},
 		methods:
@@ -65,7 +69,8 @@
 				{
 					activation_code: this.activation_code,
 					pin_code: this.pin,
-					username: this.username
+					username: this.username,
+					password: this.password
 				});
 
 				if (response.data == 'success')
@@ -84,10 +89,17 @@
 						color: 'red'
 					})
 				}
+				else if (response.data == 'error_used')
+				{
+					this.$q.notify({
+						message: "Code already used.",
+						color: 'red'
+					})
+				}
 				else if (response.data == 'error_member')
 				{
 					this.$q.notify({
-						message: "Username doesn't exist.",
+						message: "Invalid account.",
 						color: 'red'
 					})
 				}
