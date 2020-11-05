@@ -11,7 +11,7 @@
 				<q-input filled label="Username" v-model="username"></q-input>
 			</div>
 			<div class="form-group">
-				<q-input filled label="Password" v-model="password"></q-input>
+				<q-input type="password" filled label="Password" v-model="password"></q-input>
 			</div>
 			<div class="form-group">
 				<div style="display: grid; grid-template-columns: auto auto; grid-column-gap: 5px">

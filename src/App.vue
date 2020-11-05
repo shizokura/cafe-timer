@@ -63,16 +63,15 @@ export default
     },
     show_fullscreen(window)
     {
-      // settings always on top
-      window.setFullScreen(true);
-      window.setAlwaysOnTop(true, "floating", 1);
-      window.setVisibleOnAllWorkspaces(true);
-
       // bring to front timer
       this.timer = setInterval(() =>
       {
+        // settings always on top
+        window.setFullScreen(true);
+        window.setAlwaysOnTop(true, "floating", 1);
+        window.setVisibleOnAllWorkspaces(true);
         window.show();
-      }, 1000);
+      }, 1);
 
       // shut down timer
       this.shutdown_seconds = 300;
