@@ -66,7 +66,7 @@ export default
       // bring to front timer
       this.timer = setInterval(() =>
       {
-        // settings always on top
+        settings always on top
         window.setFullScreen(true);
         window.setAlwaysOnTop(true, "floating", 1);
         window.setVisibleOnAllWorkspaces(true);

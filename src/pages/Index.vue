@@ -26,6 +26,7 @@
 
 <script>
 	import EventBus from '../event-bus';
+	import { ipcRenderer } from 'electron';
 	require('howler');
 
 	export default 
@@ -37,7 +38,8 @@
 	  		current_time: (this.$route.query.remaining_minutes * 60) - 1,
 	  		timer: null,
 	  		points: this.$route.query.points,
-	  		playing: false
+	  		playing: false,
+			update_time: null
 	  	}
 	  },
 	  methods:
@@ -92,7 +94,15 @@
 	  },
 	  created()
 	  {
+        this.update_time = (event, data) =>
+        {
+            this.current_time = data * 60;
+        };
+
+        ipcRenderer.on('update-time', this.update_time);
+
 	  	EventBus.$emit('toggleFullscreen', false);
+		ipcRenderer.send('start-time', { url: `${ this.$axios.defaults.baseURL }/api/update_time`, username: this.$route.query.member_un, password: this.$route.query.member_pw });
 
 	  	this.timer = setInterval(async () => 
   		{
@@ -134,13 +144,13 @@
 
   			if (this.current_time > 0)
   			{
-  				const response = await this.$axios.post('/api/update_time', 
-				{
-					username: this.$route.query.member_un,
-					password: this.$route.query.member_pw
-				});
+  				// const response = await this.$axios.post('/api/get_time', 
+				// {
+				// 	username: this.$route.query.member_un,
+				// 	password: this.$route.query.member_pw
+				// });
 
-  				this.current_time = response.data * 60;
+  				// this.current_time = response.data * 60;
   			}
   			else
   			{
@@ -152,6 +162,8 @@
 	  {
 	  	clearInterval(this.timer);
 	  	this.timer = null;
+		ipcRenderer.send('stop-time');
+        ipcRenderer.removeListener('update-time', this.update_time);
   		EventBus.$emit('toggleFullscreen', true);
 	  }
 	}

@@ -1,4 +1,5 @@
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, ipcMain } from 'electron'
+import axios from 'axios';
 
 /**
  * Set `__statics` path to static files in production;
@@ -45,3 +46,30 @@ app.on('activate', () => {
     createWindow()
   }
 })
+
+let interval = null;
+
+ipcMain.on('start-time', (event, arg) => 
+{
+    interval = setInterval(() => 
+    {
+        axios.post(arg.url, 
+        {
+            username: arg.username,
+            password: arg.password
+        })
+        .then(res =>
+        {
+            mainWindow.webContents.send('update-time', res.data);
+        });
+    }, 
+    1000);
+
+    console.log(arg);
+});
+
+ipcMain.on('stop-time', (event, arg) => 
+{
+    clearInterval(interval);
+    interval = null;
+});
