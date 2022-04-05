@@ -20,7 +20,8 @@ function createWindow () {
     frame: true,
     useContentSize: true,
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      backgroundThrottling: false
     }
   })
 
