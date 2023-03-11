@@ -79,10 +79,20 @@
 				}
 				else
 				{
-					this.$q.notify({
-						message: "The credentials you've entered doesn't match any account.",
-						color: 'red'
-					})
+					if (response.data == 'no_time')
+					{
+						this.$q.notify({
+							message: "You have no time on this account.",
+							color: 'red'
+						})
+					}
+					else
+					{
+						this.$q.notify({
+							message: "The credentials you've entered doesn't match any account.",
+							color: 'red'
+						})
+					}
 				}
 
 				this.$q.loading.hide();
